@@ -1,4 +1,3 @@
-console.log('linked')
 const canvas = document.querySelector("#canvas")
 const ctx = canvas.getContext('2d')
 canvas.setAttribute('height', getComputedStyle(canvas).height)
@@ -21,43 +20,22 @@ class Character{
 
 }
 
+let firstCeiling = new Character(403, 0, 20, 15, 'green')
+let secondCeiling = new Character(403, 0, 30, 15, 'green')
+let thirdCeiling = new Character(403, 0, 40, 15, 'green')
+let fourthCeiling = new Character(403, 0, 50, 15, 'green')
+let fifthCeiling = new Character(403, 0, 60, 15, 'green')
+let firstFloor = new Character(403, 160, 100, 15, 'green')
+let secondFloor = new Character(403, 170, 100, 15, 'green')
+let thirdFloor  = new Character(403, 180, 100, 15, 'green')
+let fourthFloor = new Character(403, 190, 100, 15, 'green')
+let fifthFloor = new Character(403, 200, 100, 15, 'green')
+const easy = [firstCeiling, firstFloor, secondCeiling, secondFloor, thirdCeiling, thirdFloor, fourthCeiling, fourthFloor, fifthCeiling, fifthFloor]
+
+
 // x max width = 410
-// const caveFloor = new Character(410, 150, 100, 7, 'green')
-// caveFloor.render()
-// const caveCeiling = new Character(410, 0, 60, 7, 'green')
-// caveCeiling.render()
-const mainChar = new Character(50, 56, 15, 15, 'orange')
+const mainChar = new Character(50, 50, 15, 15, 'orange')
 mainChar.render()
-
-function generateCave(){
-    let ceiling = new Character(410, 0, 60, 7, 'green')
-    ceiling.render()
-    ceiling.x -= 7
-    let floor = new Character(410, 150, 100, 7, 'green')
-    floor.render()
-    floor.x -= 7
-}
-
-function detectCollisionFloor(){
-    const top = mainChar.y + mainChar.height >= caveFloor.y
-    const left = mainChar.x + mainChar.width >= caveFloor.x
-    const right = mainChar.x + mainChar.width <= caveFloor.x + caveFloor.width
-    if(top && left && right){
-        console.log('collision')
-    }
-}
-
-function detectCollisionCeiling(){
-    const top = mainChar.y <= caveCeiling.y + caveCeiling.height
-    const left = mainChar.x + mainChar.width >= caveCeiling.x
-    const right = mainChar.x + mainChar.width <= caveCeiling.x + caveCeiling.width
-    if(left && top && right){
-        console.log(`left is ${left}`)
-        console.log(`top is ${top}`)
-        console.log('collision')
-    }
-}
-
 
 function keyPress(e) {
     if(e.key === " "){
@@ -65,15 +43,33 @@ function keyPress(e) {
         mainChar.y -= 10
     }
 }
+document.addEventListener('keydown', keyPress)
 
-function gravity(){
+function generateCave() {
+    let count = 0
+    let atZero = true
+    if(atZero){
+        easy[count].render()
+        easy[count + 1].render()
+        count += 2
+    }
+}
+
+
+const caveGeneration = setInterval(generateCave, 2000)
+
+function gameController(){
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     mainChar.y += 2
     mainChar.render()
-    generateCave()
-    
+    function keyPress(e) {
+        if(e.key === " "){
+            console.log('jump')
+            mainChar.y -= 10
+        }
+    }
 }
 
-//const jumpLoop = setInterval(gravity, 100)
+//const jumpLoop = setInterval(gameController, 100)
 
-document.addEventListener('keydown', keyPress)
+
