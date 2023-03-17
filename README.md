@@ -2,7 +2,7 @@
 ## Time to Explore!
 You are a bueatiful dot who wants nothing more than to explore a massive cave. Unfortunately gravity is not being very helpful to you (idk why it won't just help you, but whatever.) You need to avoid hitting ceilings and falling to your death, but lukily, your desire to explore overcomes the fear of death.
 
-Keep your dot floating by hitting the **SPACEBAR**. The farther in you go the quicker you will move, making it harder to predict and adjust to the steep falls and climbs of the cave walls. 
+Keep your dot floating by hitting the SPACEBAR. The farther in you go the quicker you will move, making it harder to predict and adjust to the steep falls and climbs of the cave walls. 
 ---
 ![Cave Explorer](./caveExplorerImage.jpg)
 ---
@@ -21,3 +21,8 @@ Keep your dot floating by hitting the **SPACEBAR**. The farther in you go the qu
 * Decorate the outside of canvas to look like the inside of a cave
 * Have optional characters to play with
 * Create a background in the cave for user experience (in lou of just a colored background)
+* As the player gets farther, the tunnel should also shrink, increasing the difficulty
+* Add background music to give a more immersive style
+## Potential roadblocks
+* the cave needs to be fluid, meaning it will go up a little ways before going down. The auto column generating needs to be able to do this.
+* have the character appear to be affected by gravity could be tough as well, it will be better the more natural it looks.
