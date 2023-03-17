@@ -4,7 +4,7 @@ You are a bueatiful dot who wants nothing more than to explore a massive cave. U
 
 Keep your dot floating by hitting the **SPACEBAR**. The farther in you go the quicker you will move, making it harder to predict and adjust to the steep falls and climbs of the cave walls. 
 ---
-!(/Users/brianrogers/seir-306/unit1/project-1/caveExplorerImage.jpg)
+!(./Users/brianrogers/seir-306/unit1/project-1/caveExplorerImage.jpg)
 ---
 ## MVD
 * Create a an object (square or circle) that can be linked to the space bar for vertical movements
