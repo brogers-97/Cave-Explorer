@@ -5,7 +5,7 @@ You are a bueatiful dot who wants nothing more than to explore a massive cave. U
 ## Instructions
 
 Keep your dot floating by hitting the spacebar. The farther in you go the quicker you will move, making it harder to predict and adjust to the steep falls and climbs of the cave walls. 
----
+
 ![Cave Explorer](./caveExplorerImage.jpg)
 ---
 ## MVD
