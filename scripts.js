@@ -20,18 +20,21 @@ class Character{
 
 }
 
-let firstCeiling = new Character(403, 0, 20, 15, 'green')
-let secondCeiling = new Character(403, 0, 30, 15, 'green')
-let thirdCeiling = new Character(403, 0, 40, 15, 'green')
-let fourthCeiling = new Character(403, 0, 50, 15, 'green')
-let fifthCeiling = new Character(403, 0, 60, 15, 'green')
-let firstFloor = new Character(403, 160, 100, 15, 'green')
-let secondFloor = new Character(403, 170, 100, 15, 'green')
-let thirdFloor  = new Character(403, 180, 100, 15, 'green')
-let fourthFloor = new Character(403, 190, 100, 15, 'green')
-let fifthFloor = new Character(403, 200, 100, 15, 'green')
-const easy = [firstCeiling, firstFloor, secondCeiling, secondFloor, thirdCeiling, thirdFloor, fourthCeiling, fourthFloor, fifthCeiling, fifthFloor]
 
+const ceiling = new Character(200, 0, 80, 10, 'green')
+ceiling.render()
+
+// function funFunction(){
+//     if(i >= easyCeiling.length){
+//         i = easyCeiling.length - 1
+//         direction = -1
+//     } else if(i < 0){
+//         i = 0
+//         direction = 1
+//     }
+//     //console.log(i)
+//     i += direction 
+// }
 
 // x max width = 410
 const mainChar = new Character(50, 50, 15, 15, 'orange')
@@ -45,29 +48,10 @@ function keyPress(e) {
 }
 document.addEventListener('keydown', keyPress)
 
-function generateCave() {
-    let count = 0
-    let atZero = true
-    if(atZero){
-        easy[count].render()
-        easy[count + 1].render()
-        count += 2
-    }
-}
-
-
-const caveGeneration = setInterval(generateCave, 2000)
-
 function gameController(){
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     mainChar.y += 2
     mainChar.render()
-    function keyPress(e) {
-        if(e.key === " "){
-            console.log('jump')
-            mainChar.y -= 10
-        }
-    }
 }
 
 //const jumpLoop = setInterval(gameController, 100)
