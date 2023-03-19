@@ -1,5 +1,6 @@
 const canvas = document.querySelector("#canvas")
 const ctx = canvas.getContext('2d')
+const startBtn = document.querySelector("#startBtn")
 //canvas.setAttribute('height', getComputedStyle(canvas).height)
 //canvas.setAttribute('width', getComputedStyle(canvas).width)
 
@@ -65,6 +66,10 @@ function keyPress(e) {
     }
 }
 
+function hitCave(){
+    clearInterval(jumpLoop)
+}
+
 document.addEventListener('keydown', keyPress)
 const mainChar = new Character(50, 50, 15, 15, 'orange')
 
@@ -76,6 +81,12 @@ function gameController(){
     for(let j = 0; j < floorArray.length; j++){
         floorArray[j].render()
         floorArray[j].update()
+        if(mainChar.x < floorArray[j].x + floorArray[j].width &&
+            mainChar.x + mainChar.width > floorArray[j].x &&
+            mainChar.y + mainChar.height > floorArray[j].y &&
+            mainChar.y < floorArray[j].y + floorArray[j].height) {
+             hitCave()
+            }
         if(floorArray[j].x + floorArray[j].width < 0){
             floorArray.splice(j, 1)
             j--
@@ -88,7 +99,7 @@ function gameController(){
         if(mainChar.x < ceilingArray[j].x + ceilingArray[j].width &&
             mainChar.x + mainChar.width > ceilingArray[j].x &&
             mainChar.y < ceilingArray[j].y + ceilingArray[j].height) {
-             console.log("Collision with ceiling!")
+             hitCave()
             }
         if(ceilingArray[j].x + ceilingArray[j].width < 0){
             ceilingArray.splice(j, 1)
@@ -97,6 +108,6 @@ function gameController(){
     }
 } 
 
-//const jumpLoop = setInterval(gameController, 100)
+const jumpLoop = setInterval(gameController, 100)
 
 
