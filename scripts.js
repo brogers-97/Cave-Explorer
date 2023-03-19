@@ -42,10 +42,11 @@ class Cave{
     }
 }
 
-const firstCave = new Cave(290, 0, 50, 10, 'green')
-let caveArray = [firstCave]
 
-const num = [50, 45, 40, 35, 30, 25, 20, 25, 30, 35, 40]
+let ceilingArray = []
+let floorArray = []
+const floorHeight = [135, 130, 125, 120, 115, 110, 105, 110, 115, 120, 125]
+const ceilingHeight = [50, 45, 40, 35, 30, 25, 20, 25, 30, 35, 40]
 let i = 0
 direction = 1
 
@@ -53,10 +54,10 @@ function keyPress(e) {
     if(e.key === " "){
         console.log('jump')
         mainChar.y -= 15
-        if(i >= num.arr){
-            i = num.arr - 1
+        if(i >= ceilingHeight.length - 1){
+            i = ceilingHeight.length - 1
             direction = -1
-        } else if(i < 0){
+        } else if(i === 0 && direction === -1){
             i = 0
             direction = 1
         }
@@ -66,23 +67,36 @@ function keyPress(e) {
 
 document.addEventListener('keydown', keyPress)
 const mainChar = new Character(50, 50, 15, 15, 'orange')
-mainChar.render()
-
-
 
 function gameController(){
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     mainChar.render()
     mainChar.gravity()
-
-    caveArray.push(new Cave(290, 0, num[i], 10, 'green'))
-    for(let j = 0; j < caveArray.length; j++){
-        caveArray[j].render()
-        caveArray[j].update()
-        console.log(i)
+    floorArray.push(new Cave(290, floorHeight[i], 200, 10, 'green'))
+    for(let j = 0; j < floorArray.length; j++){
+        floorArray[j].render()
+        floorArray[j].update()
+        if(floorArray[j].x + floorArray[j].width < 0){
+            floorArray.splice(j, 1)
+            j--
+        }
+    }
+    ceilingArray.push(new Cave(290, 0, ceilingHeight[i], 10, 'green'))
+    for(let j = 0; j < ceilingArray.length; j++){
+        ceilingArray[j].render()
+        ceilingArray[j].update()
+        if(mainChar.x < ceilingArray[j].x + ceilingArray[j].width &&
+            mainChar.x + mainChar.width > ceilingArray[j].x &&
+            mainChar.y < ceilingArray[j].y + ceilingArray[j].height) {
+             console.log("Collision with ceiling!")
+            }
+        if(ceilingArray[j].x + ceilingArray[j].width < 0){
+            ceilingArray.splice(j, 1)
+            j--
+        }
     }
 } 
 
-const jumpLoop = setInterval(gameController, 100)
+//const jumpLoop = setInterval(gameController, 100)
 
 
