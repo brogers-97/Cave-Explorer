@@ -73,7 +73,15 @@ function hitCave(){
 document.addEventListener('keydown', keyPress)
 const mainChar = new Character(50, 50, 15, 15, 'orange')
 
+let gameStarted = false
+startBtn.addEventListener('click', function(){
+    gameStarted = true
+})
+
 function gameController(){
+    if(!gameStarted){
+        return
+    }
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     mainChar.render()
     mainChar.gravity()
