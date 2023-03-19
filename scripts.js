@@ -1,7 +1,7 @@
 const canvas = document.querySelector("#canvas")
 const ctx = canvas.getContext('2d')
-canvas.setAttribute('height', getComputedStyle(canvas).height)
-canvas.setAttribute('width', getComputedStyle(canvas).width)
+//canvas.setAttribute('height', getComputedStyle(canvas).height)
+//canvas.setAttribute('width', getComputedStyle(canvas).width)
 
 
 class Character{
@@ -18,42 +18,71 @@ class Character{
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 
+    gravity(){
+        this.y += 4
+    }
 }
 
+class Cave{
+    constructor(x, y, height, width, color) {
+        this.x = x
+        this.y = y
+        this.height = height
+        this.width = width
+        this.color = color
+    }
 
-const ceiling = new Character(200, 0, 80, 10, 'green')
-ceiling.render()
+    render(){
+        ctx.fillStyle = this.color
+        ctx.fillRect(this.x, this.y, this.width, this.height)
+    }
 
-// function funFunction(){
-//     if(i >= easyCeiling.length){
-//         i = easyCeiling.length - 1
-//         direction = -1
-//     } else if(i < 0){
-//         i = 0
-//         direction = 1
-//     }
-//     //console.log(i)
-//     i += direction 
-// }
+    update(){
+        this.x -= this.width
+    }
+}
 
-// x max width = 410
-const mainChar = new Character(50, 50, 15, 15, 'orange')
-mainChar.render()
+const firstCave = new Cave(290, 0, 50, 10, 'green')
+let caveArray = [firstCave]
+
+const num = [50, 45, 40, 35, 30, 25, 20, 25, 30, 35, 40]
+let i = 0
+direction = 1
 
 function keyPress(e) {
     if(e.key === " "){
         console.log('jump')
-        mainChar.y -= 10
+        mainChar.y -= 15
+        if(i >= num.arr){
+            i = num.arr - 1
+            direction = -1
+        } else if(i < 0){
+            i = 0
+            direction = 1
+        }
+        i += direction
     }
 }
+
 document.addEventListener('keydown', keyPress)
+const mainChar = new Character(50, 50, 15, 15, 'orange')
+mainChar.render()
+
+
 
 function gameController(){
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    mainChar.y += 2
     mainChar.render()
-}
+    mainChar.gravity()
 
-//const jumpLoop = setInterval(gameController, 100)
+    caveArray.push(new Cave(290, 0, num[i], 10, 'green'))
+    for(let j = 0; j < caveArray.length; j++){
+        caveArray[j].render()
+        caveArray[j].update()
+        console.log(i)
+    }
+} 
+
+const jumpLoop = setInterval(gameController, 100)
 
 
