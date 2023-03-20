@@ -1,5 +1,5 @@
 body {
-    background-color: grey;
+    background-image: url(/Users/brianrogers/seir-306/unit1/project-1/background.png);
     text-align: center;
     font-family: 'VT323', monospace;
 }
@@ -7,6 +7,7 @@ canvas {
     background-color: black;
     width: 100;
     height: 200;
+    box-shadow: 20px 20px 20px rgba(0,0,0,0.5);
 }
 h1 {
     font-size: 55px;

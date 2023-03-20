@@ -3,18 +3,19 @@ const ctx = canvas.getContext('2d')
 const startBtn = document.querySelector("#startBtn")
 const resetBtn = document.querySelector("#restartBtn")
 const instructions = document.querySelector("#instructions")
+const exploreTitle = document.querySelector("#explore")
 canvas.setAttribute('height', getComputedStyle(canvas).height)
 canvas.setAttribute('width', getComputedStyle(canvas).width)
 const gameScore = document.querySelector("#score")
 let died = false
 let score = 0
 canvas.width = 500;
-canvas.height = 250;
+canvas.height = 200;
 resetBtn.style.visibility = 'hidden'
 
 
 
-console.log()
+
 
 
 
@@ -59,6 +60,24 @@ class Cave{
 
 
 
+//TITLE ANIMATION
+
+let startAnimation = false
+let x = 0
+function exploringAnimation(){
+    titleArray = ['Exploring.', 'Exploring..', 'Exploring...', 'Exploring....']
+    if(startAnimation){
+    if(x === titleArray.length - 1){
+        x = 0
+    }
+    exploreTitle.innerHTML = titleArray[x]
+    x++
+}
+}
+
+
+
+
 
 
 //CAVE GENERATION
@@ -97,8 +116,10 @@ function hitCave(){
     gameStarted = false
     countScore = false
     died = true
+    startAnimation = false
+    exploreTitle.innerHTML = 'You died exploring'
     resetBtn.style.visibility = 'visible'
-    instructions.innerHTML = 'you died :('
+    instructions.innerHTML = ':('
     instructions.style.visibility = 'visible'
 }
 
@@ -113,6 +134,7 @@ startBtn.addEventListener('click', function(){
     gameStarted = true
     countScore = true
     died = false
+    startAnimation = true
     startBtn.style.visibility = 'hidden'
     instructions.style.visibility = 'hidden'
 })
@@ -129,9 +151,10 @@ resetBtn.addEventListener('click', function(){
     floorArray = []
     ceilingArray = []
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+    exploreTitle.innerHTML = 'Cave Explorer'
     startBtn.style.visibility = 'visible'
     resetBtn.style.visibility = 'hidden'
-    instructions.innerHTML = 'Keep your dot floating by hitting the SPACEBAR. The farther in you go the quicker you will move, making it harder to predict and adjust to the steep falls and climbs of the cave walls.'
+    instructions.innerHTML = 'Keep your dot floating by hitting the SPACEBAR. The farther in you go the smaller the cave becomes, making it harder to predict and adjust to the steep falls and climbs of the cave walls.'
     instructions.style.visibility = 'visible'
     score = 0
     gameScore.innerHTML = `Score: ${score}`
@@ -147,6 +170,8 @@ function increaseScore(){
         gameScore.innerHTML = `Score: ${score}`
     }
 }
+
+
 
 
 
@@ -174,16 +199,15 @@ function gameController(){
         return
     }
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    mainChar.render()
     mainChar.gravity()
+    mainChar.render()
     floorArray.push(new Cave(canvas.width, floorHeight[i], 200, 10, 'purple'))
     for(let j = 0; j < floorArray.length; j++){
         floorArray[j].render()
         floorArray[j].update()
-        if(mainChar.x < floorArray[j].x + floorArray[j].width &&
-            mainChar.x + mainChar.width > floorArray[j].x &&
-            mainChar.y + mainChar.height > floorArray[j].y &&
-            mainChar.y < floorArray[j].y + floorArray[j].height) {
+        if(mainChar.x <= floorArray[j].x + floorArray[j].width &&
+            mainChar.x + mainChar.width >= floorArray[j].x &&
+            mainChar.y + mainChar.height >= floorArray[j].y) {
              hitCave()
             }
         if(floorArray[j].x + floorArray[j].width < 0){
@@ -195,9 +219,9 @@ function gameController(){
     for(let j = 0; j < ceilingArray.length; j++){
         ceilingArray[j].render()
         ceilingArray[j].update()
-        if(mainChar.x < ceilingArray[j].x + ceilingArray[j].width &&
-            mainChar.x + mainChar.width > ceilingArray[j].x &&
-            mainChar.y < ceilingArray[j].y + ceilingArray[j].height) {
+        if(mainChar.x <= ceilingArray[j].x + ceilingArray[j].width &&
+            mainChar.x + mainChar.width >= ceilingArray[j].x &&
+            mainChar.y <= ceilingArray[j].y + ceilingArray[j].height) {
              hitCave()
             }
         if(ceilingArray[j].x + ceilingArray[j].width < 0){
@@ -211,3 +235,4 @@ function gameController(){
 const gameLoop = setInterval(gameController, 100)
 const keepScore = setInterval(increaseScore, 300)
 const changeDifficulty = setInterval(increaseDifficulty, 30000)
+const titleAnimation = setInterval(exploringAnimation, 1000)
