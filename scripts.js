@@ -2,11 +2,20 @@ const canvas = document.querySelector("#canvas")
 const ctx = canvas.getContext('2d')
 const startBtn = document.querySelector("#startBtn")
 const resetBtn = document.querySelector("#restartBtn")
+const instructions = document.querySelector("#instructions")
 //canvas.setAttribute('height', getComputedStyle(canvas).height)
 //canvas.setAttribute('width', getComputedStyle(canvas).width)
+const gameScore = document.querySelector("#score")
+let died = false
+let score = 0
 resetBtn.style.visibility = 'hidden'
 
-// constructs the orange square used for the game (mainChar)
+
+
+
+
+
+
 class Character{
     constructor(x, y, height, width, color) {
         this.x = x
@@ -15,18 +24,17 @@ class Character{
         this.width = width
         this.color = color
     }
-    // function that will create the character when invoked (see line 94)
+    
     render(){
         ctx.fillStyle = this.color
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
-    // function that imitates gravity by increasing the y axis distance when invoked (see line 95)
+    
     gravity(){
         this.y += 4
     }
 }
 
-// constructs the cave ceiling and floors
 class Cave{
     constructor(x, y, height, width, color) {
         this.x = x
@@ -35,26 +43,29 @@ class Cave{
         this.width = width
         this.color = color
     }
-    // function that will create a column that is used as the cave ceiling/floor when invoked
+    
     render(){
         ctx.fillStyle = this.color
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
-    // function that moves the column from the right of the screen to the left upon invocation
+    
     update(){
         this.x -= this.width
     }
 }
 
-// lines 48 & 49 are arrays to store the created columns (see line 100 and 119)
+
+
+
+
+//CAVE GENERATION
+
 let ceilingArray = []
 let floorArray = []
-// these arrays control the heights of the columns when the index (on line 53) is changed.
-const floorHeight = [135, 130, 125, 120, 115, 110, 105, 110, 115, 120, 125]
-const ceilingHeight = [50, 45, 40, 35, 30, 25, 20, 25, 30, 35, 40]
+let floorHeight = [135, 130, 125, 120, 115, 110, 105, 110, 115, 120, 125]
+let ceilingHeight = [50, 45, 40, 35, 30, 25, 20, 25, 30, 35, 40]
 let i = 0
 direction = 1
-// the below function creates an effect where "i" will bounce from 0 to the end of the arrays on line 51 & 52 and then iterate back through the arrays backwards. it will do this everysingle time the 'keydown' is invoked on line 70
 function keyPress(e) {
     if(e.key === " "){
         console.log('jump')
@@ -72,55 +83,108 @@ function keyPress(e) {
 document.addEventListener('keydown', keyPress)
 
 
-// stops running the gameController when invoked (see lines 110 & 126)
+
+
+
+
+//HIT CAVE COLLISSION
+
 function hitCave(){
-    clearInterval(jumpLoop)
+    gameStarted = false
+    countScore = false
+    died = true
     resetBtn.style.visibility = 'visible'
 }
 
 
-// lines 80 -> 83 control the booleans that will determine if the gameController runs or not (whether the game starts or not)
+
+
+//START BUTTON
+
+let countScore = false
 let gameStarted = false
 startBtn.addEventListener('click', function(){
     gameStarted = true
+    countScore = true
+    died = false
     startBtn.style.visibility = 'hidden'
+    instructions.style.visibility = 'hidden'
 })
 
-const mainChar = new Character(50, 50, 15, 15, 'orange')
 
-//controls the flow of the game. The collision detection. Creates the cave walls. The mainChars fall rate.
+
+
+//RESET BUTTON
+
+resetBtn.addEventListener('click', function(){
+    gameStarted = false
+    floorHeight = [135, 130, 125, 120, 115, 110, 105, 110, 115, 120, 125]
+    ceilingHeight = [50, 45, 40, 35, 30, 25, 20, 25, 30, 35, 40]
+    floorArray = []
+    ceilingArray = []
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    startBtn.style.visibility = 'visible'
+    resetBtn.style.visibility = 'hidden'
+    instructions.style.visibility = 'visible'
+    score = 0
+    gameScore.innerHTML = `Score: ${score}`
+})
+
+
+
+//KEEPS THE SCORE
+
+function increaseScore(){
+    if(countScore){
+        score += 1
+        gameScore.innerHTML = `Score: ${score}`
+    }
+}
+
+
+
+//CHANGES CAVE SIZE
+
+function increaseDifficulty(){
+    if(died){
+        return
+    }
+    for(let i = 0; i < floorHeight.length; i++){
+        floorHeight[i] -= 5
+    }
+    console.log('difficulty has increased!')
+}
+
+
+
+
+
+const mainChar = new Character(50, 50, 15, 15, 'green')
+
+
 function gameController(){
     if(!gameStarted){
         return
     }
-
-    // refreshes the canvas with the current locations of the mainChar and each cave Ceiling/Floor.
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-
     mainChar.render()
     mainChar.gravity()
-
-    // every tenth of a second the code on line 98 will push a new column representing the cave floor into the array
-    floorArray.push(new Cave(290, floorHeight[i], 200, 10, 'green'))
-    // every column inside of the array is being rendered and updated every tenth of a second.
+    floorArray.push(new Cave(290, floorHeight[i], 200, 10, 'purple'))
     for(let j = 0; j < floorArray.length; j++){
         floorArray[j].render()
         floorArray[j].update()
-        // each column is being checked for these conditions to show a collision. 
         if(mainChar.x < floorArray[j].x + floorArray[j].width &&
             mainChar.x + mainChar.width > floorArray[j].x &&
             mainChar.y + mainChar.height > floorArray[j].y &&
             mainChar.y < floorArray[j].y + floorArray[j].height) {
              hitCave()
             }
-        // to keep the game from crashing, this clears away the columns that are no longer present on the canvas.
         if(floorArray[j].x + floorArray[j].width < 0){
             floorArray.splice(j, 1)
             j--
         }
     }
-    // lines 117 -> 130 repeat the logic of the code from line 98 -> 115
-    ceilingArray.push(new Cave(290, 0, ceilingHeight[i], 10, 'green'))
+    ceilingArray.push(new Cave(290, 0, ceilingHeight[i], 10, 'purple'))
     for(let j = 0; j < ceilingArray.length; j++){
         ceilingArray[j].render()
         ceilingArray[j].update()
@@ -136,11 +200,7 @@ function gameController(){
     }
 } 
 
-//runs the gameController every tenth of a second. stored in a variable so it can be clear upon collision
-const jumpLoop = setInterval(gameController, 100)
 
-function resetGame(){
-    clearInterval(jumpLoop)
-    gameStarted = false
-}
-resetBtn.addEventListener('click', resetGame())
+const gameLoop = setInterval(gameController, 100)
+const keepScore = setInterval(increaseScore, 300)
+const changeDifficulty = setInterval(increaseDifficulty, 30000)
