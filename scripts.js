@@ -3,16 +3,18 @@ const ctx = canvas.getContext('2d')
 const startBtn = document.querySelector("#startBtn")
 const resetBtn = document.querySelector("#restartBtn")
 const instructions = document.querySelector("#instructions")
-//canvas.setAttribute('height', getComputedStyle(canvas).height)
-//canvas.setAttribute('width', getComputedStyle(canvas).width)
+canvas.setAttribute('height', getComputedStyle(canvas).height)
+canvas.setAttribute('width', getComputedStyle(canvas).width)
 const gameScore = document.querySelector("#score")
 let died = false
 let score = 0
+canvas.width = 500;
+canvas.height = 250;
 resetBtn.style.visibility = 'hidden'
 
 
 
-
+console.log()
 
 
 
@@ -58,6 +60,7 @@ class Cave{
 
 
 
+
 //CAVE GENERATION
 
 let ceilingArray = []
@@ -68,6 +71,7 @@ let i = 0
 direction = 1
 function keyPress(e) {
     if(e.key === " "){
+        e.preventDefault();
         console.log('jump')
         mainChar.y -= 15
         if(i >= ceilingHeight.length - 1){
@@ -94,6 +98,8 @@ function hitCave(){
     countScore = false
     died = true
     resetBtn.style.visibility = 'visible'
+    instructions.innerHTML = 'you died :('
+    instructions.style.visibility = 'visible'
 }
 
 
@@ -125,6 +131,7 @@ resetBtn.addEventListener('click', function(){
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     startBtn.style.visibility = 'visible'
     resetBtn.style.visibility = 'hidden'
+    instructions.innerHTML = 'Keep your dot floating by hitting the SPACEBAR. The farther in you go the quicker you will move, making it harder to predict and adjust to the steep falls and climbs of the cave walls.'
     instructions.style.visibility = 'visible'
     score = 0
     gameScore.innerHTML = `Score: ${score}`
@@ -169,7 +176,7 @@ function gameController(){
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     mainChar.render()
     mainChar.gravity()
-    floorArray.push(new Cave(290, floorHeight[i], 200, 10, 'purple'))
+    floorArray.push(new Cave(canvas.width, floorHeight[i], 200, 10, 'purple'))
     for(let j = 0; j < floorArray.length; j++){
         floorArray[j].render()
         floorArray[j].update()
@@ -184,7 +191,7 @@ function gameController(){
             j--
         }
     }
-    ceilingArray.push(new Cave(290, 0, ceilingHeight[i], 10, 'purple'))
+    ceilingArray.push(new Cave(canvas.width, 0, ceilingHeight[i], 10, 'purple'))
     for(let j = 0; j < ceilingArray.length; j++){
         ceilingArray[j].render()
         ceilingArray[j].update()
