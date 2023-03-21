@@ -8,13 +8,13 @@ Keep your dot floating by hitting the spacebar. The farther in you go the quicke
 
 ![Cave Explorer](./caveExplorerImage.jpg)
 ---
-## MVD
+## MVP
 * Create a an object (square or circle) that can be linked to the space bar for vertical movements
 * Have a game menu with a preview of the game play, instructions and a functional play button
 * Randomly generate columns with their collision information
 * Create collision info for character that stays with it while it goes up and down
+* As the player gets farther, the tunnel should also shrink, increasing the difficulty
 * Create interval that will generate the new columns on right side of screen and push current columns to the left 
-* Create an interval that will speed up game over time
 * Have a score board outside of the canvas that will be a marker for player progress
 * Game Over function that will end game upon colliding with walls
 * Reset button that will put the player back at the beginning
@@ -23,7 +23,7 @@ Keep your dot floating by hitting the spacebar. The farther in you go the quicke
 * Decorate the outside of canvas to look like the inside of a cave
 * Have optional characters to play with
 * Create a background in the cave for user experience (in lou of just a colored background)
-* As the player gets farther, the tunnel should also shrink, increasing the difficulty
+* Create an interval that will speed up game over time
 * Add background music to give a more immersive style
 ## Potential roadblocks
 * the cave needs to be fluid, meaning it will go up a little ways before going down. The auto column generating needs to be able to do this.

@@ -15,22 +15,30 @@ resetBtn.style.visibility = 'hidden'
 
 
 
+const caveAudio = new Audio()
+caveAudio.src = document.querySelector("#caveSounds").src
+caveAudio.loop = true
 
 
 
 
 class Character{
-    constructor(x, y, height, width, color) {
+    constructor(x, y, height, width, color, glowColor) {
         this.x = x
         this.y = y
         this.height = height
         this.width = width
         this.color = color
+        this.glowColor = glowColor
     }
     
     render(){
+        ctx.shadowBlur = 20
+        ctx.shadowColor = this.glowColor
         ctx.fillStyle = this.color
         ctx.fillRect(this.x, this.y, this.width, this.height)
+        ctx.shadowBlur = 0
+        ctx.shadowColor= 'transparent'
     }
     
     gravity(){
@@ -121,6 +129,7 @@ function hitCave(){
     resetBtn.style.visibility = 'visible'
     instructions.innerHTML = ':('
     instructions.style.visibility = 'visible'
+    caveAudio.pause()
 }
 
 
@@ -137,6 +146,7 @@ startBtn.addEventListener('click', function(){
     startAnimation = true
     startBtn.style.visibility = 'hidden'
     instructions.style.visibility = 'hidden'
+    caveAudio.play()
 })
 
 
@@ -191,7 +201,7 @@ function increaseDifficulty(){
 
 
 
-const mainChar = new Character(50, 50, 15, 15, 'green')
+const mainChar = new Character(50, 50, 15, 15, 'green', '#39FF14')
 
 
 function gameController(){
