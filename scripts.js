@@ -13,8 +13,11 @@ canvas.width = 500;
 canvas.height = 200;
 resetBtn.style.visibility = 'hidden'
 
-
-
+const deathSound = new Audio()
+deathSound.src = document.querySelector("#deathSound").src
+const caveMusic = new Audio()
+caveMusic.src = document.querySelector("#caveMusic").src
+caveMusic.loop = true
 const caveAudio = new Audio()
 caveAudio.src = document.querySelector("#caveSounds").src
 caveAudio.loop = true
@@ -130,6 +133,8 @@ function hitCave(){
     instructions.innerHTML = ':('
     instructions.style.visibility = 'visible'
     caveAudio.pause()
+    caveMusic.pause()
+    deathSound.play()
 }
 
 
@@ -147,6 +152,7 @@ startBtn.addEventListener('click', function(){
     startBtn.style.visibility = 'hidden'
     instructions.style.visibility = 'hidden'
     caveAudio.play()
+    caveMusic.play()
 })
 
 
@@ -168,6 +174,8 @@ resetBtn.addEventListener('click', function(){
     instructions.style.visibility = 'visible'
     score = 0
     gameScore.innerHTML = `Score: ${score}`
+    deathSound.pause()
+    deathSound.currentTime = 0
 })
 
 
@@ -218,7 +226,9 @@ function gameController(){
         if(mainChar.x <= floorArray[j].x + floorArray[j].width &&
             mainChar.x + mainChar.width >= floorArray[j].x &&
             mainChar.y + mainChar.height >= floorArray[j].y) {
-             hitCave()
+                floorArray[j].render()
+                mainChar.render()
+                hitCave()
             }
         if(floorArray[j].x + floorArray[j].width < 0){
             floorArray.splice(j, 1)
@@ -232,7 +242,9 @@ function gameController(){
         if(mainChar.x <= ceilingArray[j].x + ceilingArray[j].width &&
             mainChar.x + mainChar.width >= ceilingArray[j].x &&
             mainChar.y <= ceilingArray[j].y + ceilingArray[j].height) {
-             hitCave()
+                ceilingArray[j].render()
+                mainChar.render()
+                hitCave()
             }
         if(ceilingArray[j].x + ceilingArray[j].width < 0){
             ceilingArray.splice(j, 1)
