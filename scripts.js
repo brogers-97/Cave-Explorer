@@ -7,6 +7,7 @@ const exploreTitle = document.querySelector("#explore")
 const gameScore = document.querySelector("#score")
 canvas.setAttribute('height', getComputedStyle(canvas).height)
 canvas.setAttribute('width', getComputedStyle(canvas).width)
+let varGravity = 15
 let score = 0
 let died = false
 let countScore = false
@@ -54,6 +55,8 @@ class Character{
         ctx.shadowColor= 'transparent'
     }
     
+    //CREATES FALLING MOTION OF CHARACTER
+
     gravity(){
         this.y += 4
     }
@@ -102,7 +105,7 @@ function exploringAnimation(){
 
 
 
-//CAVE GENERATION && CHARACTER JUMP -> line 128
+//CAVE GENERATION && CHARACTER JUMP -> line 130
 
 let ceilingArray = []
 let floorArray = []
@@ -114,7 +117,7 @@ function keyPress(e) {
     if(e.key === " "){
         e.preventDefault();
         console.log('jump')
-        mainChar.y -= 15
+        mainChar.y -= varGravity
         if(i >= ceilingHeight.length - 1){
             i = ceilingHeight.length - 1
             direction = -1
@@ -132,13 +135,15 @@ document.addEventListener('keydown', keyPress)
 
 
 
-//HIT CAVE COLLISSION -> lines 257 && 241
+//HIT CAVE COLLISSION -> lines 259 && 243
 
 function hitCave(){
     died = true
     countScore = false
     gameStarted = false
     startAnimation = false
+    speed = 100
+    varGravity = 15
     instructions.innerHTML = ':('
     resetBtn.style.visibility = 'visible'
     instructions.style.visibility = 'visible'
@@ -180,7 +185,7 @@ resetBtn.addEventListener('click', function(){
     exploreTitle.innerHTML = 'Cave Explorer'
     startBtn.style.visibility = 'visible'
     resetBtn.style.visibility = 'hidden'
-    instructions.innerHTML = 'Keep your dot floating by hitting the SPACEBAR. The farther in you go the smaller the cave becomes, making it harder to predict and adjust to the steep falls and climbs of the cave walls.'
+    instructions.innerHTML = 'Keep your dot floating by hitting the SPACEBAR. Avoid hitting the floor and ceiling of the cave.'
     instructions.style.visibility = 'visible'
     score = 0
     gameScore.innerHTML = `Score: ${score}`
@@ -190,7 +195,7 @@ resetBtn.addEventListener('click', function(){
 
 
 
-//KEEPS THE SCORE -> line 271
+//KEEPS THE SCORE -> line 273
 
 function increaseScore(){
     if(countScore){
@@ -203,7 +208,7 @@ function increaseScore(){
 
 
 
-//CHANGES CAVE SIZE -> line 272
+//CHANGES CAVE SIZE -> line 274
 
 function increaseDifficulty(){
     if(died){
@@ -214,7 +219,6 @@ function increaseDifficulty(){
     }
     console.log('difficulty has increased!')
 }
-
 
 
 
@@ -264,10 +268,21 @@ function gameController(){
 } 
 
 
+let speed = 100
+function gameIncreaseSpeed(){
+    speed -= 10
+    varGravity += 2
+    console.log(speed)
+    clearInterval(gameLoop)
+    gameLoop = setInterval(gameController, speed)
+}
+
+
 
 //INTERVALS FOR GAME 
 
-const gameLoop = setInterval(gameController, 100)
+let gameLoop = setInterval(gameController, speed)
 const keepScore = setInterval(increaseScore, 300)
 const changeDifficulty = setInterval(increaseDifficulty, 30000)
+const increaseSpeed = setInterval(gameIncreaseSpeed, 3000)
 const titleAnimation = setInterval(exploringAnimation, 1000)
