@@ -7,7 +7,6 @@ const exploreTitle = document.querySelector("#explore")
 const gameScore = document.querySelector("#score")
 canvas.setAttribute('height', getComputedStyle(canvas).height)
 canvas.setAttribute('width', getComputedStyle(canvas).width)
-let varGravity = 15
 let score = 0
 let died = false
 let countScore = false
@@ -85,7 +84,7 @@ class Cave{
 
 
 
-//TITLE ANIMATION - line 273
+//TITLE ANIMATION - line 277
 
 let startAnimation = false
 let x = 0
@@ -117,7 +116,7 @@ function keyPress(e) {
     if(e.key === " "){
         e.preventDefault();
         console.log('jump')
-        mainChar.y -= varGravity
+        mainChar.y -= 15
         if(i >= ceilingHeight.length - 1){
             i = ceilingHeight.length - 1
             direction = -1
@@ -135,15 +134,13 @@ document.addEventListener('keydown', keyPress)
 
 
 
-//HIT CAVE COLLISSION -> lines 259 && 243
+//HIT CAVE COLLISSION -> lines 258 && 242
 
 function hitCave(){
     died = true
     countScore = false
     gameStarted = false
     startAnimation = false
-    speed = 100
-    varGravity = 15
     instructions.innerHTML = ':('
     resetBtn.style.visibility = 'visible'
     instructions.style.visibility = 'visible'
@@ -160,9 +157,9 @@ function hitCave(){
 //START BUTTON
 
 startBtn.addEventListener('click', function(){
-    gameStarted = true
-    countScore = true
     died = false
+    countScore = true
+    gameStarted = true
     startAnimation = true
     startBtn.style.visibility = 'hidden'
     instructions.style.visibility = 'hidden'
@@ -195,7 +192,7 @@ resetBtn.addEventListener('click', function(){
 
 
 
-//KEEPS THE SCORE -> line 273
+//KEEPS THE SCORE -> line 275
 
 function increaseScore(){
     if(countScore){
@@ -208,7 +205,7 @@ function increaseScore(){
 
 
 
-//CHANGES CAVE SIZE -> line 274
+//CHANGES CAVE SIZE -> line 276
 
 function increaseDifficulty(){
     if(died){
@@ -268,21 +265,13 @@ function gameController(){
 } 
 
 
-let speed = 100
-function gameIncreaseSpeed(){
-    speed -= 10
-    varGravity += 2
-    console.log(speed)
-    clearInterval(gameLoop)
-    gameLoop = setInterval(gameController, speed)
-}
+
 
 
 
 //INTERVALS FOR GAME 
 
-let gameLoop = setInterval(gameController, speed)
+let gameLoop = setInterval(gameController, 100)
 const keepScore = setInterval(increaseScore, 300)
 const changeDifficulty = setInterval(increaseDifficulty, 30000)
-const increaseSpeed = setInterval(gameIncreaseSpeed, 3000)
 const titleAnimation = setInterval(exploringAnimation, 1000)
