@@ -4,14 +4,21 @@ const startBtn = document.querySelector("#startBtn")
 const resetBtn = document.querySelector("#restartBtn")
 const instructions = document.querySelector("#instructions")
 const exploreTitle = document.querySelector("#explore")
+const gameScore = document.querySelector("#score")
 canvas.setAttribute('height', getComputedStyle(canvas).height)
 canvas.setAttribute('width', getComputedStyle(canvas).width)
-const gameScore = document.querySelector("#score")
-let died = false
 let score = 0
+let died = false
+let countScore = false
+let gameStarted = false
 canvas.width = 500;
 canvas.height = 200;
 resetBtn.style.visibility = 'hidden'
+
+
+
+
+//GAME PLAY AUDIO
 
 const deathSound = new Audio()
 deathSound.src = document.querySelector("#deathSound").src
@@ -24,6 +31,9 @@ caveAudio.loop = true
 
 
 
+
+
+//CHARACTER AND CAVE CREATION VALUES
 
 class Character{
     constructor(x, y, height, width, color, glowColor) {
@@ -71,7 +81,8 @@ class Cave{
 
 
 
-//TITLE ANIMATION
+
+//TITLE ANIMATION - line 273
 
 let startAnimation = false
 let x = 0
@@ -91,7 +102,7 @@ function exploringAnimation(){
 
 
 
-//CAVE GENERATION
+//CAVE GENERATION && CHARACTER JUMP -> line 128
 
 let ceilingArray = []
 let floorArray = []
@@ -121,17 +132,17 @@ document.addEventListener('keydown', keyPress)
 
 
 
-//HIT CAVE COLLISSION
+//HIT CAVE COLLISSION -> lines 257 && 241
 
 function hitCave(){
-    gameStarted = false
-    countScore = false
     died = true
+    countScore = false
+    gameStarted = false
     startAnimation = false
-    exploreTitle.innerHTML = 'You died exploring'
-    resetBtn.style.visibility = 'visible'
     instructions.innerHTML = ':('
+    resetBtn.style.visibility = 'visible'
     instructions.style.visibility = 'visible'
+    exploreTitle.innerHTML = 'You died exploring'
     caveAudio.pause()
     caveMusic.pause()
     deathSound.play()
@@ -140,10 +151,9 @@ function hitCave(){
 
 
 
+
 //START BUTTON
 
-let countScore = false
-let gameStarted = false
 startBtn.addEventListener('click', function(){
     gameStarted = true
     countScore = true
@@ -180,7 +190,7 @@ resetBtn.addEventListener('click', function(){
 
 
 
-//KEEPS THE SCORE
+//KEEPS THE SCORE -> line 271
 
 function increaseScore(){
     if(countScore){
@@ -193,7 +203,7 @@ function increaseScore(){
 
 
 
-//CHANGES CAVE SIZE
+//CHANGES CAVE SIZE -> line 272
 
 function increaseDifficulty(){
     if(died){
@@ -209,9 +219,9 @@ function increaseDifficulty(){
 
 
 
+//MAIN CAVE GENERATION, COLLISION CHECK && CAVE/CHARACTER RENDERING
+
 const mainChar = new Character(50, 50, 15, 15, 'green', '#39FF14')
-
-
 function gameController(){
     if(!gameStarted){
         return
@@ -253,6 +263,9 @@ function gameController(){
     }
 } 
 
+
+
+//INTERVALS FOR GAME 
 
 const gameLoop = setInterval(gameController, 100)
 const keepScore = setInterval(increaseScore, 300)
