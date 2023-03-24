@@ -115,7 +115,6 @@ direction = 1
 function keyPress(e) {
     if(e.key === " "){
         e.preventDefault();
-        console.log('jump')
         mainChar.y -= 15
         if(i >= ceilingHeight.length - 1){
             i = ceilingHeight.length - 1
@@ -214,7 +213,6 @@ function increaseDifficulty(){
     for(let i = 0; i < floorHeight.length; i++){
         floorHeight[i] -= 5
     }
-    console.log('difficulty has increased!')
 }
 
 

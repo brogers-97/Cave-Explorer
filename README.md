@@ -29,3 +29,7 @@ Keep your dot floating by hitting the spacebar. The farther in you go the quicke
 ## Potential roadblocks
 * the cave needs to be fluid, meaning it will go up a little ways before going down. The auto column generating needs to be able to do this.
 * have the character appear to be affected by gravity could be tough as well, it will be better the more natural it looks.
+## Post-Project Reflection 
+* Wasn't able to reach last stretch goal of speeding up the game without causing problems to the rest of the gameplay
+* Logical thinking was a big part of creating some of the essential parts of this game, mostly with 1:rendering and updating the cave ceiling and floor for the whole time they are on screen. 2:creating a cave that was random in changing shape without making the game unplayable.
+* The growth came a few different times when i learned how to input audio. Style the character with a glow, created a loop that will go forward through an array and than back throught the same array backwards forever. These moments i felt my coding knowledge expand.
